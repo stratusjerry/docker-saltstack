@@ -6,6 +6,49 @@ services:
       context: .
       dockerfile: Dockerfile.master
   salt-minion:
+    hostname: salt-minion
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+  web-01:
+    hostname: web-01
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+  web-02:
+    hostname: web-02
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+  db-01:
+    hostname: db-01
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+  db-02:
+    hostname: db-02
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+  dns-01:
+    hostname: dns-01
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+  dns-02:
+    hostname: dns-02
     build:
       context: .
       dockerfile: Dockerfile.minion
