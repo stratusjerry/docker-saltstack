@@ -38,9 +38,9 @@ To stop the running containers:
 ```bash
 # Make sure you are in the directory the 
 cd /local/demo/docker-saltstack
-# Run the ommand below to stop the running containers
+# Run the command below to stop the running containers
 docker-compose stop
-# If you wish to permanately delete the containers and there base image, run the command
+# If you wish to permanently delete the containers and there base image, run the command
 docker-compose down --rmi -v
 ```
 
