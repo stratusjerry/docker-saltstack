@@ -1,39 +1,54 @@
 # docker-saltstack
-Docker Compose setup to spin up a salt master and minions.
+Docker Compose setup to create a salt master and several minions.
 
-You will need a system with Docker and Docker Compose installed to use this project.
+# Pre-Reqs
+You will need Docker and Docker Compose installed to use this project.  See Linux instructions for installing [Docker](https://docs.docker.com/engine/install/#server) and [Docker Compose](https://docs.docker.com/compose/install/linux/). If using Mac or Windows, use [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
-Just run:
+Additionally, you will need [git](https://github.com/git-guides/install-git) installed.
 
+# Setup
+See setup instructions in comments below
 ```bash
-# Start in interactive mode, outputting to screen
-docker-compose up
-# Start in background mode
+# Create a directory on your machine to clone this repo to
+mkdir -p /local/demo/
+cd /local/demo/
+# Use git to clone this repo to your local directory
+git clone https://github.com/stratusjerry/docker-saltstack.git
+cd /local/demo/docker-saltstack
+# Start the salt master and minion containers (this may take several minutes to provision)
 docker-compose up -d
-# Stop the containers
-docker-compose stop
-
 ```
 
-from a checkout of this directory, and the master and minion will start up with debug logging to the console.
+Once the containers have started, you can log into the command line of the salt-master server by running
+```bash
+docker-compose exec salt-master bash
+```
 
-Log into the command line of the salt-master server.
-`docker-compose exec salt-master bash`
+From within the salt-master, you can run salt commands like
+```bash
+# Run a salt 'ping' test on all minions
+salt '*' test.ping
+# Feel free to run more salt master commands on minions 
+#   and when finished, exit the salt master container with the
+#   exit command
+exit
+```
 
-From that command line you can run something like:
+To stop the running containers:
+```bash
+# Make sure you are in the directory the 
+cd /local/demo/docker-saltstack
+# Run the ommand below to stop the running containers
+docker-compose stop
+# If you wish to permanately delete the containers and there base image, run the command
+docker-compose down --rmi -v
+```
 
-`salt '*' test.ping`
 
-and in the window where you started docker compose, you will see the log output of both the master sending the command and the minion receiving the command and replying.
 
 Note: you will see log messages like : "Could not determine init system from command line" - those are just because salt is running in the foreground and not from an auto-startup.
 
 The salt-master is set up to accept all minions that try to connect.  Since the network that the salt-master sees is only the docker-compose network, this means that only minions within this docker-compose service network will be able to connect (and not random other minions external to docker).
-
-#### Host Names
-The **hostnames** match the names of the containers - so the master is `salt-master` and the minion is `salt-minion`.
-
-If you are running more than one minion with `--scale=2`, you will need to use `docker-saltstack_salt-minion_1` and `docker-saltstack_salt-minion_2` for the minions if you want to target them individually.
 
 # Debugging
 ```bash
