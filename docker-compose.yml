@@ -1,56 +1,32 @@
 version: '3.7'
 
+x-common-minion: &common-minion
+    build:
+      context: .
+      dockerfile: Dockerfile.minion
+    depends_on:
+      - salt-master
+
 services: 
   salt-master:
     build:
       context: .
       dockerfile: Dockerfile.master
-  salt-minion:
-    hostname: salt-minion
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
-  web-01:
-    hostname: web-01
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
-  web-02:
-    hostname: web-02
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
   db-01:
     hostname: db-01
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
+    <<: *common-minion
   db-02:
     hostname: db-02
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
+    <<: *common-minion
   dns-01:
     hostname: dns-01
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
+    <<: *common-minion
   dns-02:
     hostname: dns-02
-    build:
-      context: .
-      dockerfile: Dockerfile.minion
-    depends_on:
-      - salt-master
+    <<: *common-minion
+  web-01:
+    hostname: web-01
+    <<: *common-minion
+  web-02:
+    hostname: web-02
+    <<: *common-minion

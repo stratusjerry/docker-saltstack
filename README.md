@@ -34,3 +34,10 @@ The salt-master is set up to accept all minions that try to connect.  Since the 
 The **hostnames** match the names of the containers - so the master is `salt-master` and the minion is `salt-minion`.
 
 If you are running more than one minion with `--scale=2`, you will need to use `docker-saltstack_salt-minion_1` and `docker-saltstack_salt-minion_2` for the minions if you want to target them individually.
+
+# Debugging
+```bash
+# Render Output, good for testing YAML anchors
+docker-compose config > ./testing/render.yml
+
+```
